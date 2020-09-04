@@ -5,11 +5,11 @@ const apiKey = 'fcff0872';
 
 const URL = 'http://www.omdbapi.com/';
 
-const kTextFieldInputDecoration = InputDecoration(
+InputDecoration kTextFieldInputDecoration = InputDecoration(
   filled: true,
   fillColor: Colors.white,
   hintText: 'Enter Movie/Series Name',
-  hintStyle: TextStyle(color: Colors.grey),
+  hintStyle: GoogleFonts.philosopher(color: Colors.grey),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(
       Radius.circular(10),

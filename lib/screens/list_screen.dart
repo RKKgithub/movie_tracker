@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'data_model.dart';
+import '../utilities/data_model.dart';
 import 'add_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'search_screen.dart';
 import 'status_screen.dart';
 
 class ContentList extends StatefulWidget {
@@ -14,15 +15,21 @@ List<DataModel> myList = [];
 class _ContentListState extends State<ContentList> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Text(
-            'My List',
-            style: GoogleFonts.baskervville(),
-          ),
-          Container(
-            height: 700,
+    FocusScope.of(context).unfocus();
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 5,
+        backgroundColor: ThemeData.dark().accentColor,
+        title: Text(
+          'Movie Tracker',
+          style: GoogleFonts.baskervville(color: Colors.black),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Container(
             child: CustomScrollView(
               slivers: [
                 SliverList(
@@ -42,19 +49,21 @@ class _ContentListState extends State<ContentList> {
                                     ? 'nothing added to list'
                                     : 'Type: ${myList[index].contentType} | Status: ${myList[index].status}'),
                                 trailing: IconButton(
-                                    icon: Icon(Icons.change_history),
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) =>
-                                            StatusScreen((status) {
+                                  icon: Icon(Icons.change_history),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => StatusScreen(
+                                        (status) {
                                           setState(() {
                                             myList[index].status = status;
                                           });
                                           Navigator.pop(context);
-                                        }),
-                                      );
-                                    }),
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                     },
@@ -64,21 +73,16 @@ class _ContentListState extends State<ContentList> {
               ],
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddScreen(),
-                ),
-              );
-            },
-          )
-        ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => SearchScreen(),
+          );
+        },
       ),
     );
   }
