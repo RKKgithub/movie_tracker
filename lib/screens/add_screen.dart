@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tracker/utilities/networking.dart';
-import 'package:movie_tracker/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_tracker/utilities/data_model.dart';
 import 'list_screen.dart';

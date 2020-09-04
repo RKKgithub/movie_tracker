@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../utilities/data_model.dart';
-import 'add_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_screen.dart';
 import 'status_screen.dart';
@@ -58,7 +57,6 @@ class _ContentListState extends State<ContentList> {
                                           setState(() {
                                             myList[index].status = status;
                                           });
-                                          Navigator.pop(context);
                                         },
                                       ),
                                     );

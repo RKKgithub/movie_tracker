@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'list_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StatusScreen extends StatelessWidget {
   final Function addStatusCallBack;
@@ -11,51 +11,48 @@ class StatusScreen extends StatelessWidget {
     String status;
 
     return Container(
-      color: Colors.black,
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              'Status',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.lightBlueAccent, fontSize: 30),
-            ),
-            TextField(
-              autofocus: true,
-              textAlign: TextAlign.center,
-              onChanged: (newText) {
-                status = newText;
-              },
-            ),
-            FlatButton(
-              color: Colors.lightBlueAccent,
-              child: Text(
-                'OK',
-                style: TextStyle(
-                  color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Status',
+                  hintStyle: GoogleFonts.philosopher(color: Colors.grey),
                 ),
+                autofocus: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  status = value;
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: FlatButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              color: ThemeData.dark().accentColor,
+              icon: Icon(
+                Icons.check,
+                color: Colors.black,
+              ),
+              label: Text(
+                'OK',
+                style:
+                    GoogleFonts.philosopher(fontSize: 20, color: Colors.black),
               ),
               onPressed: () {
                 addStatusCallBack(status);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ContentList(),
-                  ),
-                );
+                Navigator.pop(context);
               },
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
