@@ -29,47 +29,88 @@ class _ContentListState extends State<ContentList> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Container(
-            child: CustomScrollView(
-              slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return (myList.length == null)
-                          ? Text(
-                              'nothing in content list',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          : Card(
-                              child: ListTile(
-                                title: Text((myList.length == null)
-                                    ? 'nothing added to list'
-                                    : myList[index].contentName),
-                                subtitle: Text((myList.length == null)
-                                    ? 'nothing added to list'
-                                    : 'Type: ${myList[index].contentType} | Status: ${myList[index].status}'),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.change_history),
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => StatusScreen(
-                                        (status) {
-                                          setState(() {
-                                            myList[index].status = status;
-                                          });
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                    },
-                    childCount: myList.length,
+            child: ListView.builder(
+              itemCount: myList.length,
+              itemBuilder: (context, index) {
+                final item = myList[index].contentName;
+                return Dismissible(
+                  background: Container(color: Colors.red),
+                  key: Key(item),
+                  onDismissed: (direction) {
+                    setState(() {
+                      myList.removeAt(index);
+                    });
+
+                    Scaffold.of(context)
+                        .showSnackBar(SnackBar(content: Text("$item removed")));
+                  },
+                  child: ListTile(
+                    title: Text((myList.length == null)
+                        ? 'nothing added to list'
+                        : myList[index].contentName),
+                    subtitle: Text((myList.length == null)
+                        ? 'nothing added to list'
+                        : 'Type: ${myList[index].contentType} | Status: ${myList[index].status}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.change_history),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => StatusScreen(
+                            (status) {
+                              setState(() {
+                                myList[index].status = status;
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
+            // child: CustomScrollView(
+            //   slivers: [
+            //     SliverList(
+            //       delegate: SliverChildBuilderDelegate(
+            //         (context, index) {
+            //           return (myList.length == null)
+            //               ? Text(
+            //                   'nothing in content list',
+            //                   style: TextStyle(color: Colors.white),
+            //                 )
+            //               : Card(
+            // child: ListTile(
+            //   title: Text((myList.length == null)
+            //       ? 'nothing added to list'
+            //       : myList[index].contentName),
+            //   subtitle: Text((myList.length == null)
+            //       ? 'nothing added to list'
+            //       : 'Type: ${myList[index].contentType} | Status: ${myList[index].status}'),
+            //   trailing: IconButton(
+            //     icon: Icon(Icons.change_history),
+            //     onPressed: () {
+            //       showModalBottomSheet(
+            //         context: context,
+            //         builder: (context) => StatusScreen(
+            //           (status) {
+            //             setState(() {
+            //               myList[index].status = status;
+            //             });
+            //           },
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            //                 );
+            //         },
+            //         childCount: myList.length,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ),
         ),
       ),
