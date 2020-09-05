@@ -10,6 +10,7 @@ class ContentList extends StatefulWidget {
 }
 
 List<DataModel> myList = [];
+bool deltaClicked = false;
 
 class _ContentListState extends State<ContentList> {
   @override
@@ -41,8 +42,11 @@ class _ContentListState extends State<ContentList> {
                       myList.removeAt(index);
                     });
 
-                    Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text("$item removed")));
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("$item removed"),
+                      ),
+                    );
                   },
                   child: ListTile(
                     title: Text((myList.length == null)
@@ -54,6 +58,9 @@ class _ContentListState extends State<ContentList> {
                     trailing: IconButton(
                       icon: Icon(Icons.change_history),
                       onPressed: () {
+                        setState(() {
+                          deltaClicked = true;
+                        });
                         showModalBottomSheet(
                           context: context,
                           builder: (context) => StatusScreen(
@@ -63,66 +70,35 @@ class _ContentListState extends State<ContentList> {
                               });
                             },
                           ),
-                        );
+                        ).then((value) {
+                          setState(() {
+                            deltaClicked = false;
+                          });
+                        });
                       },
                     ),
                   ),
                 );
               },
             ),
-            // child: CustomScrollView(
-            //   slivers: [
-            //     SliverList(
-            //       delegate: SliverChildBuilderDelegate(
-            //         (context, index) {
-            //           return (myList.length == null)
-            //               ? Text(
-            //                   'nothing in content list',
-            //                   style: TextStyle(color: Colors.white),
-            //                 )
-            //               : Card(
-            // child: ListTile(
-            //   title: Text((myList.length == null)
-            //       ? 'nothing added to list'
-            //       : myList[index].contentName),
-            //   subtitle: Text((myList.length == null)
-            //       ? 'nothing added to list'
-            //       : 'Type: ${myList[index].contentType} | Status: ${myList[index].status}'),
-            //   trailing: IconButton(
-            //     icon: Icon(Icons.change_history),
-            //     onPressed: () {
-            //       showModalBottomSheet(
-            //         context: context,
-            //         builder: (context) => StatusScreen(
-            //           (status) {
-            //             setState(() {
-            //               myList[index].status = status;
-            //             });
-            //           },
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            //                 );
-            //         },
-            //         childCount: myList.length,
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amberAccent,
         child: Icon(Icons.search),
         onPressed: () {
           showModalBottomSheet(
             context: context,
             builder: (context) => SearchScreen(),
-          );
+          ).then((value) {
+            setState(() {
+              print(myList.length);
+            });
+          });
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 }

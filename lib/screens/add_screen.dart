@@ -124,6 +124,7 @@ class _AddScreenState extends State<AddScreen> {
                           Navigator.pop(context);
                         }),
                       );
+                      //Navigator.pop(context);
                     },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 150),

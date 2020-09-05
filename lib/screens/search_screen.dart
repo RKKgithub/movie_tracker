@@ -125,7 +125,6 @@ class SearchScreen extends StatelessWidget {
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
                     var data = await updateUI(titleName);
-                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

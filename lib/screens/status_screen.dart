@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'list_screen.dart';
 
 class StatusScreen extends StatelessWidget {
   final Function addStatusCallBack;
@@ -49,6 +50,9 @@ class StatusScreen extends StatelessWidget {
               onPressed: () {
                 addStatusCallBack(status);
                 Navigator.pop(context);
+                if (!deltaClicked) {
+                  Navigator.pop(context);
+                }
               },
             ),
           ),
