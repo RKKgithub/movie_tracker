@@ -87,13 +87,13 @@ class _ContentListState extends State<ContentList> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amberAccent,
         child: Icon(Icons.search),
-        onPressed: () {
+        onPressed: () async {
           showModalBottomSheet(
             context: context,
             builder: (context) => SearchScreen(),
           ).then((value) {
             setState(() {
-              print(myList.length);
+              myList.length = myList.length;
             });
           });
         },

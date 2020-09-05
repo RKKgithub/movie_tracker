@@ -11,6 +11,7 @@ class AddScreen extends StatefulWidget {
   final String language;
   final String posterURL;
   final String type;
+  final String rating;
 
   AddScreen(
       {this.properName,
@@ -18,7 +19,8 @@ class AddScreen extends StatefulWidget {
       this.language,
       this.plot,
       this.posterURL,
-      this.type});
+      this.type,
+      this.rating});
 
   @override
   _AddScreenState createState() => _AddScreenState();
@@ -28,91 +30,54 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5,
-        backgroundColor: ThemeData.dark().accentColor,
-        title: Text(
-          'Title Info',
-          style: GoogleFonts.baskervville(color: Colors.black),
-        ),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Text(
-                        (widget.properName == null) ? '' : widget.properName,
-                        style: GoogleFonts.pacifico(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        (widget.type == null) ? '' : widget.type,
-                        style: GoogleFonts.pacifico(fontSize: 15),
-                      ),
-                      (widget.posterURL == null)
-                          ? Text('Search Title')
-                          : Image(
-                              image: NetworkImage(widget.posterURL),
-                              width: MediaQuery.of(context).size.width * 0.5,
-                            ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        (widget.language == null) ? '' : widget.language,
-                        style: GoogleFonts.lato(),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          (widget.plot == null) ? '' : widget.plot,
-                          style: GoogleFonts.lato(fontSize: 15),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        (widget.genre == null) ? '' : widget.genre,
-                        style: GoogleFonts.lato(fontSize: 15),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            FlatButton(
-              color: ThemeData.dark().accentColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              onPressed: (widget.properName == 'sorry can\'t fetch data')
-                  ? null
-                  : () {
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amberAccent,
+        child: Icon(Icons.keyboard_arrow_right),
+        onPressed: (widget.properName == 'sorry can\'t fetch data')
+            ? null
+            : () {
+                if (myList.length == 0) {
+                  DataModel dataModel = DataModel(
+                    contentGenre: widget.genre,
+                    contentLanguage: widget.language,
+                    contentName: widget.properName,
+                    contentPlot: widget.plot,
+                    contentPosterURL: widget.posterURL,
+                    contentType: widget.type,
+                    contentRating: widget.rating,
+                  );
+
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => StatusScreen((status) {
+                      setState(() {
+                        dataModel.status = status;
+                        myList.add(dataModel);
+                      });
+                      Navigator.pop(context);
+                    }),
+                  );
+                } else {
+                  for (DataModel item in myList) {
+                    if (widget.properName == item.contentName) {
+                      // Scaffold.of(context).showSnackBar(
+                      //   SnackBar(
+                      //     content:
+                      //         Text("title already exists in your list"),
+                      //   ),
+                      // );
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    } else {
                       DataModel dataModel = DataModel(
-                          contentGenre: widget.genre,
-                          contentLanguage: widget.language,
-                          contentName: widget.properName,
-                          contentPlot: widget.plot,
-                          contentPosterURL: widget.posterURL,
-                          contentType: widget.type);
+                        contentGenre: widget.genre,
+                        contentLanguage: widget.language,
+                        contentName: widget.properName,
+                        contentPlot: widget.plot,
+                        contentPosterURL: widget.posterURL,
+                        contentType: widget.type,
+                        contentRating: widget.rating,
+                      );
 
                       showModalBottomSheet(
                         context: context,
@@ -124,20 +89,89 @@ class _AddScreenState extends State<AddScreen> {
                           Navigator.pop(context);
                         }),
                       );
-                      //Navigator.pop(context);
-                    },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 150),
-                child: Text(
-                  'Next',
-                  style: GoogleFonts.philosopher(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
+                    }
+                  }
+                }
+              },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      appBar: AppBar(
+        elevation: 5,
+        backgroundColor: ThemeData.dark().accentColor,
+        title: Text(
+          'Title Info',
+          style: GoogleFonts.baskervville(color: Colors.black),
+        ),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: ListView(
+                  children: [
+                    Text(
+                      (widget.properName == null) ? '' : widget.properName,
+                      style: GoogleFonts.pacifico(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      (widget.type == null) ? 'Type:' : 'Type:  ${widget.type}',
+                      style: GoogleFonts.handlee(fontSize: 15),
+                      textAlign: TextAlign.center,
+                    ),
+                    (widget.posterURL == null)
+                        ? Text('ISSUE')
+                        : Image(
+                            image: NetworkImage(widget.posterURL),
+                            width: MediaQuery.of(context).size.width * 0.5,
+                          ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        (widget.language == null)
+                            ? 'Language:'
+                            : 'Language:  ${widget.language}',
+                        style: GoogleFonts.handlee(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        (widget.plot == null) ? '' : widget.plot,
+                        style: GoogleFonts.handlee(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        (widget.rating == null)
+                            ? 'IMDB:'
+                            : 'IMDB:  ${widget.rating}',
+                        style: GoogleFonts.handlee(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Text(
+                      (widget.genre == null) ? '' : widget.genre,
+                      style: GoogleFonts.handlee(fontSize: 15),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

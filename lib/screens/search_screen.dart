@@ -13,6 +13,7 @@ class SearchScreen extends StatelessWidget {
   String language;
   String posterURL;
   String type;
+  String rating;
 
   Future<DataModel> updateUI(String titleName) async {
     NetworkHelper networkHelper =
@@ -38,6 +39,9 @@ class SearchScreen extends StatelessWidget {
       type = (titleData['Type'] == null)
           ? 'sorry can\'t fetch data'
           : titleData['Type'];
+      rating = (titleData['imdbRating'] == null)
+          ? 'sorry can\'t fetch data'
+          : titleData['imdbRating'];
 
       return DataModel(
         contentGenre: genre,
@@ -46,6 +50,7 @@ class SearchScreen extends StatelessWidget {
         contentPlot: plot,
         contentPosterURL: posterURL,
         contentType: type,
+        contentRating: rating,
       );
     } catch (e) {
       print(e);
@@ -56,6 +61,7 @@ class SearchScreen extends StatelessWidget {
         contentPlot: null,
         contentPosterURL: null,
         contentType: null,
+        contentRating: null,
       );
     }
   }
@@ -129,13 +135,13 @@ class SearchScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddScreen(
-                          properName: data.contentName,
-                          type: data.contentType,
-                          posterURL: data.contentPosterURL,
-                          language: data.contentLanguage,
-                          plot: data.contentPlot,
-                          genre: data.contentGenre,
-                        ),
+                            properName: data.contentName,
+                            type: data.contentType,
+                            posterURL: data.contentPosterURL,
+                            language: data.contentLanguage,
+                            plot: data.contentPlot,
+                            genre: data.contentGenre,
+                            rating: data.contentRating),
                       ),
                     );
                   },
