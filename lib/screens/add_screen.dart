@@ -30,12 +30,12 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amberAccent,
-        child: Icon(Icons.keyboard_arrow_right),
-        onPressed: (widget.properName == 'sorry can\'t fetch data')
-            ? null
-            : () {
+      floatingActionButton: (widget.properName == 'sorry can\'t fetch data')
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Colors.amberAccent,
+              child: Icon(Icons.keyboard_arrow_right),
+              onPressed: () {
                 if (myList.length == 0) {
                   DataModel dataModel = DataModel(
                     contentGenre: widget.genre,
@@ -93,7 +93,7 @@ class _AddScreenState extends State<AddScreen> {
                   }
                 }
               },
-      ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       appBar: AppBar(
         elevation: 5,
@@ -116,59 +116,60 @@ class _AddScreenState extends State<AddScreen> {
               padding: const EdgeInsets.all(10),
               child: Container(
                 height: MediaQuery.of(context).size.height,
-                child: ListView(
-                  children: [
-                    Text(
-                      (widget.properName == null) ? '' : widget.properName,
-                      style: GoogleFonts.pacifico(fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      (widget.type == null) ? 'Type:' : 'Type:  ${widget.type}',
-                      style: GoogleFonts.handlee(fontSize: 15),
-                      textAlign: TextAlign.center,
-                    ),
-                    (widget.posterURL == null)
-                        ? Text('ISSUE')
-                        : Image(
+                child: (widget.properName == 'sorry can\'t fetch data')
+                    ? Center(
+                        child: Container(
+                          child: Text(
+                              'Sorry can\'t fetch data. Try checking the Title Name.'),
+                        ),
+                      )
+                    : ListView(
+                        children: [
+                          Text(
+                            widget.properName,
+                            style: GoogleFonts.pacifico(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'Type:  ${widget.type}',
+                            style: GoogleFonts.handlee(fontSize: 15),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image(
                             image: NetworkImage(widget.posterURL),
                             width: MediaQuery.of(context).size.width * 0.5,
                           ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        (widget.language == null)
-                            ? 'Language:'
-                            : 'Language:  ${widget.language}',
-                        style: GoogleFonts.handlee(fontSize: 15),
-                        textAlign: TextAlign.center,
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              'Language:  ${widget.language}',
+                              style: GoogleFonts.handlee(fontSize: 15),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              widget.plot,
+                              style: GoogleFonts.handlee(fontSize: 15),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Text(
+                              'IMDB:  ${widget.rating}',
+                              style: GoogleFonts.handlee(fontSize: 15),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Text(
+                            widget.genre,
+                            style: GoogleFonts.handlee(fontSize: 15),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        (widget.plot == null) ? '' : widget.plot,
-                        style: GoogleFonts.handlee(fontSize: 15),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text(
-                        (widget.rating == null)
-                            ? 'IMDB:'
-                            : 'IMDB:  ${widget.rating}',
-                        style: GoogleFonts.handlee(fontSize: 15),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      (widget.genre == null) ? '' : widget.genre,
-                      style: GoogleFonts.handlee(fontSize: 15),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
               ),
             ),
           ),

@@ -20,7 +20,7 @@ class StatusScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Enter Status',
+                  hintText: 'Enter Comment',
                   hintStyle: GoogleFonts.philosopher(color: Colors.grey),
                 ),
                 autofocus: true,
