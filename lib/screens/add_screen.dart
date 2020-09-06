@@ -56,7 +56,9 @@ class _AddScreenState extends State<AddScreen> {
                       });
                       Navigator.pop(context);
                     }),
-                  );
+                  ).then((value) {
+                    Navigator.pop(context);
+                  });
                 } else {
                   for (DataModel item in myList) {
                     if (widget.properName == item.contentName) {
@@ -88,7 +90,9 @@ class _AddScreenState extends State<AddScreen> {
                           });
                           Navigator.pop(context);
                         }),
-                      );
+                      ).then((value) {
+                        Navigator.pop(context);
+                      });
                     }
                   }
                 }
