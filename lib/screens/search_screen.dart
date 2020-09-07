@@ -14,6 +14,7 @@ class SearchScreen extends StatelessWidget {
   String posterURL;
   String type;
   String rating;
+  String cast;
 
   Future<DataModel> updateUI(String titleName) async {
     NetworkHelper networkHelper =
@@ -42,6 +43,9 @@ class SearchScreen extends StatelessWidget {
       rating = (titleData['imdbRating'] == null)
           ? 'sorry can\'t fetch data'
           : titleData['imdbRating'];
+      cast = (titleData['Actors'] == null)
+          ? 'sorry can\'t fetch data'
+          : titleData['Actors'];
 
       return DataModel(
         contentGenre: genre,
@@ -51,6 +55,7 @@ class SearchScreen extends StatelessWidget {
         contentPosterURL: posterURL,
         contentType: type,
         contentRating: rating,
+        contentCast: cast,
       );
     } catch (e) {
       print(e);
@@ -62,6 +67,7 @@ class SearchScreen extends StatelessWidget {
         contentPosterURL: null,
         contentType: null,
         contentRating: null,
+        contentCast: null,
       );
     }
   }
@@ -135,13 +141,15 @@ class SearchScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddScreen(
-                            properName: data.contentName,
-                            type: data.contentType,
-                            posterURL: data.contentPosterURL,
-                            language: data.contentLanguage,
-                            plot: data.contentPlot,
-                            genre: data.contentGenre,
-                            rating: data.contentRating),
+                          properName: data.contentName,
+                          type: data.contentType,
+                          posterURL: data.contentPosterURL,
+                          language: data.contentLanguage,
+                          plot: data.contentPlot,
+                          genre: data.contentGenre,
+                          rating: data.contentRating,
+                          cast: data.contentCast,
+                        ),
                       ),
                     );
                   },

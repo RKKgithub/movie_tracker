@@ -51,8 +51,8 @@ class StatusScreen extends StatelessWidget {
                 if (deltaClicked) {
                   addStatusCallBack(status);
                 } else {
-                  addStatusCallBack(status);
                   Navigator.pop(context);
+                  addStatusCallBack(status);
                 }
               },
             ),

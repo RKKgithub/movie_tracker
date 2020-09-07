@@ -12,91 +12,112 @@ class AddScreen extends StatefulWidget {
   final String posterURL;
   final String type;
   final String rating;
+  final String cast;
 
-  AddScreen(
-      {this.properName,
-      this.genre,
-      this.language,
-      this.plot,
-      this.posterURL,
-      this.type,
-      this.rating});
+  AddScreen({
+    this.properName,
+    this.genre,
+    this.language,
+    this.plot,
+    this.posterURL,
+    this.type,
+    this.rating,
+    this.cast,
+  });
 
   @override
   _AddScreenState createState() => _AddScreenState();
 }
 
+List selectedList = myList;
+
 class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
+    if (pageNo == 0) {
+      setState(() {
+        selectedList = myList;
+      });
+    } else if (pageNo == 1) {
+      setState(() {
+        selectedList = futureList;
+      });
+    } else {
+      setState(() {
+        selectedList = recommendationsList;
+      });
+    }
+
     return Scaffold(
       floatingActionButton: (widget.properName == 'sorry can\'t fetch data')
           ? null
-          : FloatingActionButton(
-              backgroundColor: Colors.amberAccent,
-              child: Icon(Icons.keyboard_arrow_right),
-              onPressed: () {
-                if (myList.length == 0) {
-                  DataModel dataModel = DataModel(
-                    contentGenre: widget.genre,
-                    contentLanguage: widget.language,
-                    contentName: widget.properName,
-                    contentPlot: widget.plot,
-                    contentPosterURL: widget.posterURL,
-                    contentType: widget.type,
-                    contentRating: widget.rating,
-                  );
+          : Builder(
+              builder: (context) => FloatingActionButton(
+                backgroundColor: Colors.amberAccent,
+                child: Icon(Icons.keyboard_arrow_right),
+                onPressed: () {
+                  if (selectedList.length == 0) {
+                    DataModel dataModel = DataModel(
+                      contentGenre: widget.genre,
+                      contentLanguage: widget.language,
+                      contentName: widget.properName,
+                      contentPlot: widget.plot,
+                      contentPosterURL: widget.posterURL,
+                      contentType: widget.type,
+                      contentRating: widget.rating,
+                      contentCast: widget.cast,
+                    );
 
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => StatusScreen((status) {
-                      setState(() {
-                        dataModel.status = status;
-                        myList.add(dataModel);
-                      });
-                      Navigator.pop(context);
-                    }),
-                  ).then((value) {
-                    Navigator.pop(context);
-                  });
-                } else {
-                  for (DataModel item in myList) {
-                    if (widget.properName == item.contentName) {
-                      // Scaffold.of(context).showSnackBar(
-                      //   SnackBar(
-                      //     content:
-                      //         Text("title already exists in your list"),
-                      //   ),
-                      // );
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    } else {
-                      DataModel dataModel = DataModel(
-                        contentGenre: widget.genre,
-                        contentLanguage: widget.language,
-                        contentName: widget.properName,
-                        contentPlot: widget.plot,
-                        contentPosterURL: widget.posterURL,
-                        contentType: widget.type,
-                        contentRating: widget.rating,
-                      );
-
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => StatusScreen((status) {
-                          setState(() {
-                            dataModel.status = status;
-                            myList.add(dataModel);
-                          });
-                          Navigator.pop(context);
-                        }),
-                      ).then((value) {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => StatusScreen((status) {
+                        setState(() {
+                          dataModel.status = status;
+                          selectedList.add(dataModel);
+                        });
                         Navigator.pop(context);
-                      });
+                      }),
+                    ).then((value) {
+                      Navigator.pop(context);
+                    });
+                  } else {
+                    for (DataModel item in selectedList) {
+                      if (widget.properName == item.contentName) {
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                "${item.contentName} already exists in your list"),
+                          ),
+                        );
+                      } else {
+                        DataModel dataModel = DataModel(
+                          contentGenre: widget.genre,
+                          contentLanguage: widget.language,
+                          contentName: widget.properName,
+                          contentPlot: widget.plot,
+                          contentPosterURL: widget.posterURL,
+                          contentType: widget.type,
+                          contentRating: widget.rating,
+                          contentCast: widget.cast,
+                        );
+
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => StatusScreen((status) {
+                            setState(() {
+                              dataModel.status = status;
+                              selectedList.add(dataModel);
+                            });
+                            Navigator.pop(context);
+                          }),
+                        ).then((value) {
+                          Navigator.pop(context);
+                        });
+                      }
                     }
                   }
-                }
-              },
+                },
+              ),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       appBar: AppBar(
@@ -171,6 +192,15 @@ class _AddScreenState extends State<AddScreen> {
                             widget.genre,
                             style: GoogleFonts.handlee(fontSize: 15),
                             textAlign: TextAlign.center,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15),
+                            child: Text(
+                              widget.cast,
+                              style: GoogleFonts.handlee(fontSize: 15),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
