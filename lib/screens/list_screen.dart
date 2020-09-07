@@ -14,6 +14,7 @@ List<DataModel> futureList = [];
 List<DataModel> recommendationsList = [];
 
 bool deltaClicked = false;
+bool _isButtonTapped = false;
 
 int pageNo = 0;
 
@@ -75,7 +76,37 @@ class _ContentListState extends State<ContentList> {
 
                               Scaffold.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("${item.contentName} removed"),
+                                  content: Row(
+                                    children: [
+                                      Text("${item.contentName} removed"),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (!_isButtonTapped) {
+                                            _isButtonTapped = true;
+                                            setState(() {
+                                              myList.add(item);
+                                            });
+                                            Future.delayed(
+                                                Duration(
+                                                  seconds: 4,
+                                                ), () {
+                                              _isButtonTapped = false;
+                                            });
+                                          }
+                                        },
+                                        child: Text(
+                                          'Undo',
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              decoration:
+                                                  TextDecoration.underline),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -174,7 +205,37 @@ class _ContentListState extends State<ContentList> {
 
                               Scaffold.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("${item.contentName} removed"),
+                                  content: Row(
+                                    children: [
+                                      Text("${item.contentName} removed"),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (!_isButtonTapped) {
+                                            _isButtonTapped = true;
+                                            setState(() {
+                                              myList.add(item);
+                                            });
+                                            Future.delayed(
+                                                Duration(
+                                                  seconds: 4,
+                                                ), () {
+                                              _isButtonTapped = false;
+                                            });
+                                          }
+                                        },
+                                        child: Text(
+                                          'Undo',
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              decoration:
+                                                  TextDecoration.underline),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -273,7 +334,37 @@ class _ContentListState extends State<ContentList> {
 
                               Scaffold.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("${item.contentName} removed"),
+                                  content: Row(
+                                    children: [
+                                      Text("${item.contentName} removed"),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (!_isButtonTapped) {
+                                            _isButtonTapped = true;
+                                            setState(() {
+                                              myList.add(item);
+                                            });
+                                            Future.delayed(
+                                                Duration(
+                                                  seconds: 4,
+                                                ), () {
+                                              _isButtonTapped = false;
+                                            });
+                                          }
+                                        },
+                                        child: Text(
+                                          'Undo',
+                                          style: TextStyle(
+                                              color: Colors.blue,
+                                              decoration:
+                                                  TextDecoration.underline),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
