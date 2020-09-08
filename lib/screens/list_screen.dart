@@ -3,6 +3,7 @@ import '../utilities/data_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_screen.dart';
 import 'status_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContentList extends StatefulWidget {
   @override
@@ -19,8 +20,6 @@ bool _isButtonTapped = false;
 int pageNo = 0;
 
 final controller = PageController(initialPage: 0);
-
-List<Padding> listItems = [];
 
 class _ContentListState extends State<ContentList> {
   @override
@@ -216,7 +215,7 @@ class _ContentListState extends State<ContentList> {
                                           if (!_isButtonTapped) {
                                             _isButtonTapped = true;
                                             setState(() {
-                                              myList.add(item);
+                                              futureList.add(item);
                                             });
                                             Future.delayed(
                                                 Duration(
@@ -345,7 +344,7 @@ class _ContentListState extends State<ContentList> {
                                           if (!_isButtonTapped) {
                                             _isButtonTapped = true;
                                             setState(() {
-                                              myList.add(item);
+                                              recommendationsList.add(item);
                                             });
                                             Future.delayed(
                                                 Duration(
