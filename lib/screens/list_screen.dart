@@ -3,7 +3,6 @@ import '../utilities/data_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_screen.dart';
 import 'status_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ContentList extends StatefulWidget {
   @override
