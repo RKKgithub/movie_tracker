@@ -3,6 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_tracker/utilities/data_model.dart';
 import 'list_screen.dart';
 import 'status_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const url = 'https://www.youtube.com/results?search_query';
+
+void launchURL(String titleName) async {
+  if (await canLaunch('$url=$titleName')) {
+    await launch('$url=$titleName');
+  } else {
+    throw 'Could not launch $url=$titleName';
+  }
+}
 
 class AddScreen extends StatefulWidget {
   final String properName;
@@ -201,6 +212,24 @@ class _AddScreenState extends State<AddScreen> {
                               style: GoogleFonts.handlee(fontSize: 15),
                               textAlign: TextAlign.center,
                             ),
+                          ),
+                          Column(
+                            children: [
+                              Text('Trailers & Clips'),
+                              GestureDetector(
+                                child: Text(
+                                  '$url=${widget.properName}',
+                                  style: GoogleFonts.handlee(
+                                      fontSize: 15,
+                                      decoration: TextDecoration.underline,
+                                      color: Colors.blue),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onTap: () {
+                                  launchURL(widget.properName);
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
