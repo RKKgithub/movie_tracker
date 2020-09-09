@@ -4,6 +4,7 @@ import 'package:movie_tracker/utilities/data_model.dart';
 import 'list_screen.dart';
 import 'status_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:convert';
 
 const url = 'https://www.youtube.com/results?search_query';
 
@@ -41,6 +42,8 @@ class AddScreen extends StatefulWidget {
 }
 
 List selectedList = myList;
+List selectedJsonList = myJson;
+String selectedListKey = 'my';
 
 class _AddScreenState extends State<AddScreen> {
   @override
@@ -48,14 +51,20 @@ class _AddScreenState extends State<AddScreen> {
     if (pageNo == 0) {
       setState(() {
         selectedList = myList;
+        selectedJsonList = myJson;
+        selectedListKey = 'my';
       });
     } else if (pageNo == 1) {
       setState(() {
         selectedList = futureList;
+        selectedJsonList = futureJson;
+        selectedListKey = 'future';
       });
     } else {
       setState(() {
         selectedList = recommendationsList;
+        selectedJsonList = recommendationsJson;
+        selectedListKey = 'recommendations';
       });
     }
 
@@ -85,7 +94,10 @@ class _AddScreenState extends State<AddScreen> {
                         setState(() {
                           dataModel.status = status;
                           selectedList.add(dataModel);
+                          selectedJsonList.add(jsonEncode(dataModel.toJson()));
+                          saveList(selectedJsonList, selectedListKey);
                         });
+
                         Navigator.pop(context);
                       }),
                     ).then((value) {
@@ -118,6 +130,9 @@ class _AddScreenState extends State<AddScreen> {
                             setState(() {
                               dataModel.status = status;
                               selectedList.add(dataModel);
+                              selectedJsonList
+                                  .add(jsonEncode(dataModel.toJson()));
+                              saveList(selectedJsonList, selectedListKey);
                             });
                             Navigator.pop(context);
                           }),

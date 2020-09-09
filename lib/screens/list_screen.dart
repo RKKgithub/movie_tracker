@@ -3,15 +3,37 @@ import '../utilities/data_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_screen.dart';
 import 'status_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ContentList extends StatefulWidget {
   @override
   _ContentListState createState() => _ContentListState();
 }
 
+SharedPreferences prefs;
+
+Future<void> assignPrefs() async {
+  prefs = await SharedPreferences.getInstance();
+}
+
+void saveList(List list, String key) {
+  prefs.setStringList(key, list);
+}
+
+List<String> getList(String key) {
+  assignPrefs();
+  List list = prefs.getStringList(key);
+  return list;
+}
+
 List<DataModel> myList = [];
 List<DataModel> futureList = [];
 List<DataModel> recommendationsList = [];
+
+List<String> myJson = [];
+List<String> futureJson = [];
+List<String> recommendationsJson = [];
 
 bool deltaClicked = false;
 bool _isButtonTapped = false;
@@ -23,6 +45,74 @@ final controller = PageController(initialPage: 0);
 class _ContentListState extends State<ContentList> {
   @override
   Widget build(BuildContext context) {
+    assignPrefs();
+
+    if (prefs != null) {
+      if (getList('my') != null) {
+        print(myJson);
+        setState(() {
+          myJson = getList('my');
+        });
+      }
+
+      if (getList('future') != null) {
+        setState(() {
+          futureJson = getList('future');
+        });
+      }
+
+      if (getList('recommendations') != null) {
+        setState(() {
+          recommendationsJson = getList('recommendations');
+        });
+      }
+    }
+
+    if (myJson.length != null) {
+      setState(() {
+        myList = [];
+      });
+      for (String jsonString in myJson) {
+        setState(() {
+          myList.add(
+            DataModel.fromJson(
+              json.decode(jsonString),
+            ),
+          );
+        });
+      }
+    }
+
+    if (futureJson.length != null) {
+      setState(() {
+        futureList = [];
+      });
+      for (String jsonString in futureJson) {
+        setState(() {
+          futureList.add(
+            DataModel.fromJson(
+              json.decode(jsonString),
+            ),
+          );
+        });
+      }
+    }
+
+    if (recommendationsJson.length != null) {
+      setState(() {
+        recommendationsList = [];
+      });
+      for (String jsonString in recommendationsJson) {
+        setState(() {
+          recommendationsList.add(
+            DataModel.fromJson(
+              json.decode(jsonString),
+            ),
+          );
+        });
+      }
+    }
+
     FocusScope.of(context).unfocus();
     return Scaffold(
       appBar: AppBar(
@@ -70,6 +160,12 @@ class _ContentListState extends State<ContentList> {
                             onDismissed: (direction) {
                               setState(() {
                                 myList.remove(item);
+                                myJson.remove(
+                                  json.encode(
+                                    item.toJson(),
+                                  ),
+                                );
+                                saveList(myJson, 'my');
                               });
 
                               Scaffold.of(context).showSnackBar(
@@ -86,6 +182,12 @@ class _ContentListState extends State<ContentList> {
                                             _isButtonTapped = true;
                                             setState(() {
                                               myList.add(item);
+                                              myJson.add(
+                                                json.encode(
+                                                  item.toJson(),
+                                                ),
+                                              );
+                                              saveList(myJson, 'my');
                                             });
                                             Future.delayed(
                                                 Duration(
@@ -199,6 +301,12 @@ class _ContentListState extends State<ContentList> {
                             onDismissed: (direction) {
                               setState(() {
                                 futureList.remove(item);
+                                futureJson.remove(
+                                  json.encode(
+                                    item.toJson(),
+                                  ),
+                                );
+                                saveList(futureJson, 'future');
                               });
 
                               Scaffold.of(context).showSnackBar(
@@ -215,6 +323,12 @@ class _ContentListState extends State<ContentList> {
                                             _isButtonTapped = true;
                                             setState(() {
                                               futureList.add(item);
+                                              futureJson.add(
+                                                json.encode(
+                                                  item.toJson(),
+                                                ),
+                                              );
+                                              saveList(futureJson, 'future');
                                             });
                                             Future.delayed(
                                                 Duration(
@@ -328,6 +442,13 @@ class _ContentListState extends State<ContentList> {
                             onDismissed: (direction) {
                               setState(() {
                                 recommendationsList.remove(item);
+                                recommendationsJson.remove(
+                                  json.encode(
+                                    item.toJson(),
+                                  ),
+                                );
+                                saveList(
+                                    recommendationsJson, 'recommendations');
                               });
 
                               Scaffold.of(context).showSnackBar(
@@ -344,6 +465,13 @@ class _ContentListState extends State<ContentList> {
                                             _isButtonTapped = true;
                                             setState(() {
                                               recommendationsList.add(item);
+                                              recommendationsJson.add(
+                                                json.encode(
+                                                  item.toJson(),
+                                                ),
+                                              );
+                                              saveList(recommendationsJson,
+                                                  'recommendations');
                                             });
                                             Future.delayed(
                                                 Duration(

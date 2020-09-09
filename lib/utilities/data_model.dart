@@ -20,4 +20,27 @@ class DataModel {
   final String contentCast;
 
   String status;
+
+  DataModel.fromJson(Map<String, dynamic> json)
+      : contentName = json['contentName'],
+        contentType = json['contentType'],
+        contentPlot = json['contentPlot'],
+        contentLanguage = json['contentLanguage'],
+        contentGenre = json['contentGenre'],
+        contentPosterURL = json['contentPosterURL'],
+        contentRating = json['contentRating'],
+        contentCast = json['contentCast'],
+        status = json['contentStatus'];
+
+  Map<String, dynamic> toJson() => {
+        'contentName': contentName,
+        'contentType': contentType,
+        'contentPlot': contentPlot,
+        'contentLanguage': contentLanguage,
+        'contentGenre': contentGenre,
+        'contentPosterURL': contentPosterURL,
+        'contentRating': contentRating,
+        'contentCast': contentCast,
+        'contentStatus': status,
+      };
 }
