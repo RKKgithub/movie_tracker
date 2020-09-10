@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utilities/data_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'add_screen.dart';
 import 'search_screen.dart';
 import 'status_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +36,6 @@ List<String> myJson = [];
 List<String> futureJson = [];
 List<String> recommendationsJson = [];
 
-bool deltaClicked = false;
 bool _isButtonTapped = false;
 
 int pageNo = 0;
@@ -49,7 +49,6 @@ class _ContentListState extends State<ContentList> {
 
     if (prefs != null) {
       if (getList('my') != null) {
-        print(myJson);
         setState(() {
           myJson = getList('my');
         });
@@ -137,17 +136,17 @@ class _ContentListState extends State<ContentList> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ReorderableListView(
-                  header: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'My List',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.fenix(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
+                child: ListView(
+                  // header: Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 12),
+                  //   child: Text(
+                  //     'My List',
+                  //     textAlign: TextAlign.center,
+                  //     style: GoogleFonts.fenix(
+                  //       fontSize: 20,
+                  //     ),
+                  //   ),
+                  // ),
                   children: [
                     for (DataModel item in myList)
                       Padding(
@@ -222,24 +221,21 @@ class _ContentListState extends State<ContentList> {
                                 trailing: IconButton(
                                   icon: Icon(Icons.change_history),
                                   onPressed: () {
-                                    setState(() {
-                                      deltaClicked = true;
-                                    });
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => StatusScreen(
-                                        (status) {
-                                          setState(() {
-                                            item.status = status;
-                                          });
-                                          Navigator.pop(context);
-                                        },
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AddScreen(
+                                          properName: item.contentName,
+                                          type: item.contentType,
+                                          posterURL: item.contentPosterURL,
+                                          language: item.contentLanguage,
+                                          plot: item.contentPlot,
+                                          genre: item.contentGenre,
+                                          rating: item.contentRating,
+                                          cast: item.contentCast,
+                                        ),
                                       ),
-                                    ).then((value) {
-                                      setState(() {
-                                        deltaClicked = false;
-                                      });
-                                    });
+                                    );
                                   },
                                 ),
                               ),
@@ -248,47 +244,64 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  onReorder: (int start, int current) {
-                    // dragging from top to bottom
-                    if (start < current) {
-                      int end = current - 1;
-                      DataModel startItem = myList[start];
-                      int i = 0;
-                      int local = start;
-                      do {
-                        myList[local] = myList[++local];
-                        i++;
-                      } while (i < end - start);
-                      myList[end] = startItem;
-                    }
-                    // dragging from bottom to top
-                    else if (start > current) {
-                      DataModel startItem = myList[start];
-                      for (int i = start; i > current; i--) {
-                        myList[i] = myList[i - 1];
-                      }
-                      myList[current] = startItem;
-                    }
-                    setState(() {});
-                  },
+                  // onReorder: (int start, int current) {
+                  //   // dragging from top to bottom
+                  //   if (start < current) {
+                  //     int end = current - 1;
+                  //     DataModel startItem = myList[start];
+                  //     String jsonString = myJson[start];
+                  //     int i = 0;
+                  //     int local = start;
+                  //     do {
+                  //       myJson[local] = myJson[++local];
+                  //       setState(() {
+                  //         saveList(myJson, 'my');
+                  //       });
+                  //       myList[local] = myList[++local];
+                  //       i++;
+                  //     } while (i < end - start);
+                  //     myList[end] = startItem;
+                  //     myJson[end] = jsonString;
+                  //     setState(() {
+                  //       saveList(myJson, 'my');
+                  //     });
+                  //   }
+                  //   // dragging from bottom to top
+                  //   else if (start > current) {
+                  //     DataModel startItem = myList[start];
+                  //     String jsonString = myJson[start];
+                  //     for (int i = start; i > current; i--) {
+                  //       myJson[i] = myJson[i - 1];
+                  //       myList[i] = myList[i - 1];
+                  //       setState(() {
+                  //         saveList(myJson, 'my');
+                  //       });
+                  //     }
+                  //     myJson[current] = jsonString;
+                  //     myList[current] = startItem;
+                  //     setState(() {
+                  //       saveList(myJson, 'my');
+                  //     });
+                  //   }
+                  // },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ReorderableListView(
-                  header: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'To Watch List',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.fenix(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
+                child: ListView(
+                  // header: Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 8),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(vertical: 8),
+                  //     child: Text(
+                  //       'To Watch List',
+                  //       textAlign: TextAlign.center,
+                  //       style: GoogleFonts.fenix(
+                  //         fontSize: 20,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   children: [
                     for (DataModel item in futureList)
                       Padding(
@@ -363,24 +376,21 @@ class _ContentListState extends State<ContentList> {
                                 trailing: IconButton(
                                   icon: Icon(Icons.change_history),
                                   onPressed: () {
-                                    setState(() {
-                                      deltaClicked = true;
-                                    });
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => StatusScreen(
-                                        (status) {
-                                          setState(() {
-                                            item.status = status;
-                                          });
-                                          Navigator.pop(context);
-                                        },
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AddScreen(
+                                          properName: item.contentName,
+                                          type: item.contentType,
+                                          posterURL: item.contentPosterURL,
+                                          language: item.contentLanguage,
+                                          plot: item.contentPlot,
+                                          genre: item.contentGenre,
+                                          rating: item.contentRating,
+                                          cast: item.contentCast,
+                                        ),
                                       ),
-                                    ).then((value) {
-                                      setState(() {
-                                        deltaClicked = false;
-                                      });
-                                    });
+                                    );
                                   },
                                 ),
                               ),
@@ -389,47 +399,47 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  onReorder: (int start, int current) {
-                    // dragging from top to bottom
-                    if (start < current) {
-                      int end = current - 1;
-                      DataModel startItem = futureList[start];
-                      int i = 0;
-                      int local = start;
-                      do {
-                        futureList[local] = futureList[++local];
-                        i++;
-                      } while (i < end - start);
-                      futureList[end] = startItem;
-                    }
-                    // dragging from bottom to top
-                    else if (start > current) {
-                      DataModel startItem = futureList[start];
-                      for (int i = start; i > current; i--) {
-                        futureList[i] = futureList[i - 1];
-                      }
-                      futureList[current] = startItem;
-                    }
-                    setState(() {});
-                  },
+                  // onReorder: (int start, int current) {
+                  //   print('im invoked');
+                  //   // dragging from top to bottom
+                  //   if (start < current) {
+                  //     int end = current - 1;
+                  //     DataModel startItem = futureList[start];
+                  //     int i = 0;
+                  //     int local = start;
+                  //     do {
+                  //       futureList[local] = futureList[++local];
+                  //       i++;
+                  //     } while (i < end - start);
+                  //     futureList[end] = startItem;
+                  //   }
+                  //   // dragging from bottom to top
+                  //   else if (start > current) {
+                  //     DataModel startItem = futureList[start];
+                  //     for (int i = start; i > current; i--) {
+                  //       futureList[i] = futureList[i - 1];
+                  //     }
+                  //     futureList[current] = startItem;
+                  //   }
+                  // },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ReorderableListView(
-                  header: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        'Recommendations List',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.fenix(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
+                child: ListView(
+                  // header: Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(vertical: 4),
+                  //     child: Text(
+                  //       'Recommendations List',
+                  //       textAlign: TextAlign.center,
+                  //       style: GoogleFonts.fenix(
+                  //         fontSize: 20,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   children: [
                     for (DataModel item in recommendationsList)
                       Padding(
@@ -507,24 +517,21 @@ class _ContentListState extends State<ContentList> {
                                 trailing: IconButton(
                                   icon: Icon(Icons.change_history),
                                   onPressed: () {
-                                    setState(() {
-                                      deltaClicked = true;
-                                    });
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => StatusScreen(
-                                        (status) {
-                                          setState(() {
-                                            item.status = status;
-                                          });
-                                          Navigator.pop(context);
-                                        },
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AddScreen(
+                                          properName: item.contentName,
+                                          type: item.contentType,
+                                          posterURL: item.contentPosterURL,
+                                          language: item.contentLanguage,
+                                          plot: item.contentPlot,
+                                          genre: item.contentGenre,
+                                          rating: item.contentRating,
+                                          cast: item.contentCast,
+                                        ),
                                       ),
-                                    ).then((value) {
-                                      setState(() {
-                                        deltaClicked = false;
-                                      });
-                                    });
+                                    );
                                   },
                                 ),
                               ),
@@ -533,30 +540,29 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  onReorder: (int start, int current) {
-                    // dragging from top to bottom
-                    if (start < current) {
-                      int end = current - 1;
-                      DataModel startItem = recommendationsList[start];
-                      int i = 0;
-                      int local = start;
-                      do {
-                        recommendationsList[local] =
-                            recommendationsList[++local];
-                        i++;
-                      } while (i < end - start);
-                      recommendationsList[end] = startItem;
-                    }
-                    // dragging from bottom to top
-                    else if (start > current) {
-                      DataModel startItem = recommendationsList[start];
-                      for (int i = start; i > current; i--) {
-                        recommendationsList[i] = recommendationsList[i - 1];
-                      }
-                      recommendationsList[current] = startItem;
-                    }
-                    setState(() {});
-                  },
+                  // onReorder: (int start, int current) {
+                  //   // dragging from top to bottom
+                  //   if (start < current) {
+                  //     int end = current - 1;
+                  //     DataModel startItem = recommendationsList[start];
+                  //     int i = 0;
+                  //     int local = start;
+                  //     do {
+                  //       recommendationsList[local] =
+                  //           recommendationsList[++local];
+                  //       i++;
+                  //     } while (i < end - start);
+                  //     recommendationsList[end] = startItem;
+                  //   }
+                  //   // dragging from bottom to top
+                  //   else if (start > current) {
+                  //     DataModel startItem = recommendationsList[start];
+                  //     for (int i = start; i > current; i--) {
+                  //       recommendationsList[i] = recommendationsList[i - 1];
+                  //     }
+                  //     recommendationsList[current] = startItem;
+                  //   }
+                  // },
                 ),
               ),
             ],

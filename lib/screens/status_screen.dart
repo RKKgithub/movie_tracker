@@ -48,12 +48,8 @@ class StatusScreen extends StatelessWidget {
                     GoogleFonts.philosopher(fontSize: 20, color: Colors.black),
               ),
               onPressed: () {
-                if (deltaClicked) {
-                  addStatusCallBack(status);
-                } else {
-                  Navigator.pop(context);
-                  addStatusCallBack(status);
-                }
+                Navigator.pop(context);
+                addStatusCallBack(status);
               },
             ),
           ),
