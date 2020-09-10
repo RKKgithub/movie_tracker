@@ -136,17 +136,29 @@ class _ContentListState extends State<ContentList> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ListView(
-                  // header: Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 12),
-                  //   child: Text(
-                  //     'My List',
-                  //     textAlign: TextAlign.center,
-                  //     style: GoogleFonts.fenix(
-                  //       fontSize: 20,
-                  //     ),
-                  //   ),
-                  // ),
+                child: ReorderableListView(
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final DataModel item = myList.removeAt(oldIndex);
+                      final String jsonItem = myJson.removeAt(oldIndex);
+                      myList.insert(newIndex, item);
+                      myJson.insert(newIndex, jsonItem);
+                      saveList(myJson, 'my');
+                    });
+                  },
+                  header: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      'My List',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.fenix(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                   children: [
                     for (DataModel item in myList)
                       Padding(
@@ -244,64 +256,36 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  // onReorder: (int start, int current) {
-                  //   // dragging from top to bottom
-                  //   if (start < current) {
-                  //     int end = current - 1;
-                  //     DataModel startItem = myList[start];
-                  //     String jsonString = myJson[start];
-                  //     int i = 0;
-                  //     int local = start;
-                  //     do {
-                  //       myJson[local] = myJson[++local];
-                  //       setState(() {
-                  //         saveList(myJson, 'my');
-                  //       });
-                  //       myList[local] = myList[++local];
-                  //       i++;
-                  //     } while (i < end - start);
-                  //     myList[end] = startItem;
-                  //     myJson[end] = jsonString;
-                  //     setState(() {
-                  //       saveList(myJson, 'my');
-                  //     });
-                  //   }
-                  //   // dragging from bottom to top
-                  //   else if (start > current) {
-                  //     DataModel startItem = myList[start];
-                  //     String jsonString = myJson[start];
-                  //     for (int i = start; i > current; i--) {
-                  //       myJson[i] = myJson[i - 1];
-                  //       myList[i] = myList[i - 1];
-                  //       setState(() {
-                  //         saveList(myJson, 'my');
-                  //       });
-                  //     }
-                  //     myJson[current] = jsonString;
-                  //     myList[current] = startItem;
-                  //     setState(() {
-                  //       saveList(myJson, 'my');
-                  //     });
-                  //   }
-                  // },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView(
-                  // header: Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 8),
-                  //     child: Text(
-                  //       'To Watch List',
-                  //       textAlign: TextAlign.center,
-                  //       style: GoogleFonts.fenix(
-                  //         fontSize: 20,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                child: ReorderableListView(
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final DataModel item = futureList.removeAt(oldIndex);
+                      final String jsonItem = futureJson.removeAt(oldIndex);
+                      futureList.insert(newIndex, item);
+                      futureJson.insert(newIndex, jsonItem);
+                      saveList(futureJson, 'future');
+                    });
+                  },
+                  header: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(
+                        'To Watch List',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.fenix(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                   children: [
                     for (DataModel item in futureList)
                       Padding(
@@ -399,47 +383,38 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  // onReorder: (int start, int current) {
-                  //   print('im invoked');
-                  //   // dragging from top to bottom
-                  //   if (start < current) {
-                  //     int end = current - 1;
-                  //     DataModel startItem = futureList[start];
-                  //     int i = 0;
-                  //     int local = start;
-                  //     do {
-                  //       futureList[local] = futureList[++local];
-                  //       i++;
-                  //     } while (i < end - start);
-                  //     futureList[end] = startItem;
-                  //   }
-                  //   // dragging from bottom to top
-                  //   else if (start > current) {
-                  //     DataModel startItem = futureList[start];
-                  //     for (int i = start; i > current; i--) {
-                  //       futureList[i] = futureList[i - 1];
-                  //     }
-                  //     futureList[current] = startItem;
-                  //   }
-                  // },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: ListView(
-                  // header: Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(vertical: 4),
-                  //     child: Text(
-                  //       'Recommendations List',
-                  //       textAlign: TextAlign.center,
-                  //       style: GoogleFonts.fenix(
-                  //         fontSize: 20,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                child: ReorderableListView(
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final DataModel item =
+                          recommendationsList.removeAt(oldIndex);
+                      final String jsonItem =
+                          recommendationsJson.removeAt(oldIndex);
+                      recommendationsList.insert(newIndex, item);
+                      recommendationsJson.insert(newIndex, jsonItem);
+                      saveList(recommendationsJson, 'recommendations');
+                    });
+                  },
+                  header: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        'Recommendations List',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.fenix(
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                   children: [
                     for (DataModel item in recommendationsList)
                       Padding(
