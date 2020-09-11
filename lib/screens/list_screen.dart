@@ -515,29 +515,6 @@ class _ContentListState extends State<ContentList> {
                         ),
                       ),
                   ],
-                  // onReorder: (int start, int current) {
-                  //   // dragging from top to bottom
-                  //   if (start < current) {
-                  //     int end = current - 1;
-                  //     DataModel startItem = recommendationsList[start];
-                  //     int i = 0;
-                  //     int local = start;
-                  //     do {
-                  //       recommendationsList[local] =
-                  //           recommendationsList[++local];
-                  //       i++;
-                  //     } while (i < end - start);
-                  //     recommendationsList[end] = startItem;
-                  //   }
-                  //   // dragging from bottom to top
-                  //   else if (start > current) {
-                  //     DataModel startItem = recommendationsList[start];
-                  //     for (int i = start; i > current; i--) {
-                  //       recommendationsList[i] = recommendationsList[i - 1];
-                  //     }
-                  //     recommendationsList[current] = startItem;
-                  //   }
-                  // },
                 ),
               ),
             ],
